@@ -34,14 +34,20 @@ def encode(shift_num, message_to_encode):
 
 
 def decode(shift_num, message_to_decode):
-    # TODO fix that func!
+    # TODO fix that function. For now it doesn't work properly. Below is the test data.
+    # DECODE
+    # 9
+    # BDFHJLCPRTXVZNYEIWGAKMUSQO
+    # AJDKSIRUXBLHWTMCQGZNPYFVOE
+    # EKMFLGDQVZNTOWYHXUSPAIBRCJ
+    # PQSACVVTOISXFXCIAMQEM
     global rotors
     result = ''
     for i, letter in enumerate(message_to_decode):
         new_letter = letter
         for rotor in reversed(rotors):
             new_letter = change_letters(new_letter, rotor)
-        caesar_rotor = generate_abc_shifted(shift_num + i)
+        caesar_rotor = generate_abc_shifted(shift_num - (26 - i))
         new_letter = change_letters(new_letter, caesar_rotor)
         result += new_letter
     return result
@@ -69,9 +75,3 @@ if __name__ == '__main__':
     operation = {'ENCODE': encode, 'DECODE': decode}
     print(operation[task](shift, message))
 
-# DECODE
-# 9
-# BDFHJLCPRTXVZNYEIWGAKMUSQO
-# AJDKSIRUXBLHWTMCQGZNPYFVOE
-# EKMFLGDQVZNTOWYHXUSPAIBRCJ
-# PQSACVVTOISXFXCIAMQEM
