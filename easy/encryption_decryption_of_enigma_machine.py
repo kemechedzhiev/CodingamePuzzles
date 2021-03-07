@@ -19,7 +19,16 @@
 #  EKMFLGDQVZNTOWYHXUSPAIBRCJ
 #  So BHD becomes KQF.
 #  Final output is sent via Radio Transmitter.
-
+# Input
+# Line 1: ENCODE or DECODE
+# Line 2: Starting shift N
+# Lines 3-5:
+# BDFHJLCPRTXVZNYEIWGAKMUSQO ROTOR I
+# AJDKSIRUXBLHWTMCQGZNPYFVOE ROTOR II
+# EKMFLGDQVZNTOWYHXUSPAIBRCJ ROTOR III
+# Line 6: Message to Encode or Decode
+# Output
+# Encoded or Decoded String
 
 def encode(shift_num, message_to_encode):
     global rotors
@@ -34,20 +43,13 @@ def encode(shift_num, message_to_encode):
 
 
 def decode(shift_num, message_to_decode):
-    # TODO fix that function. For now it doesn't work properly. Below is the test data.
-    # DECODE
-    # 9
-    # BDFHJLCPRTXVZNYEIWGAKMUSQO
-    # AJDKSIRUXBLHWTMCQGZNPYFVOE
-    # EKMFLGDQVZNTOWYHXUSPAIBRCJ
-    # PQSACVVTOISXFXCIAMQEM
     global rotors
     result = ''
     for i, letter in enumerate(message_to_decode):
         new_letter = letter
         for rotor in reversed(rotors):
             new_letter = change_letters(new_letter, rotor)
-        caesar_rotor = generate_abc_shifted(shift_num - (26 - i))
+        caesar_rotor = generate_abc_shifted(shift_num + (len(message_to_decode) - i))
         new_letter = change_letters(new_letter, caesar_rotor)
         result += new_letter
     return result
@@ -75,3 +77,9 @@ if __name__ == '__main__':
     operation = {'ENCODE': encode, 'DECODE': decode}
     print(operation[task](shift, message))
 
+# DECODE
+# 9
+# BDFHJLCPRTXVZNYEIWGAKMUSQO
+# AJDKSIRUXBLHWTMCQGZNPYFVOE
+# EKMFLGDQVZNTOWYHXUSPAIBRCJ
+# PQSACVVTOISXFXCIAMQEM
