@@ -29,6 +29,9 @@
 # Line 6: Message to Encode or Decode
 # Output
 # Encoded or Decoded String
+ABC_LENGTH = 26
+ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
 
 def encode(shift_num, message_to_encode):
     global rotors
@@ -47,26 +50,32 @@ def decode(shift_num, message_to_decode):
     result = ''
     for i, letter in enumerate(message_to_decode):
         new_letter = letter
-        for rotor in reversed(rotors):
-            new_letter = change_letters(new_letter, rotor)
-        caesar_rotor = generate_abc_shifted(shift_num + (len(message_to_decode) - i))
-        new_letter = change_letters(new_letter, caesar_rotor)
+        caesar_rotor = generate_abc_shifted(shift_num + i)
+        for rotor in [*reversed(rotors), caesar_rotor]:
+            # print(rotor)
+            new_letter = reverse_change_letters(new_letter, rotor)
         result += new_letter
+        # exit(0)
     return result
 
 
 def generate_abc_shifted(abc_shift):
     global rotors
-    abc = sorted(rotors[0])
-    if abc_shift > len(abc):
-        abc_shift %= len(abc)
-    return abc[abc_shift:] + abc[:abc_shift]
+    if abc_shift < 0:
+        abc_shift += ABC_LENGTH
+    if abc_shift > ABC_LENGTH:
+        abc_shift %= ABC_LENGTH
+    return ABC[abc_shift:] + ABC[:abc_shift]
 
 
 def change_letters(letter, rotor):
-    abc = sorted(rotor)
-    index = abc.index(letter)
+    index = ABC.index(letter)
     return rotor[index]
+
+
+def reverse_change_letters(letter, rotor):
+    index = rotor.index(letter)
+    return ABC[index]
 
 
 if __name__ == '__main__':
@@ -75,7 +84,7 @@ if __name__ == '__main__':
     rotors = [input() for _ in range(3)]
     message = input()
     operation = {'ENCODE': encode, 'DECODE': decode}
-    print(operation[task](shift, message))
+    print(operation[task](shift, message.upper()))
 
 # DECODE
 # 9
@@ -83,3 +92,21 @@ if __name__ == '__main__':
 # AJDKSIRUXBLHWTMCQGZNPYFVOE
 # EKMFLGDQVZNTOWYHXUSPAIBRCJ
 # PQSACVVTOISXFXCIAMQEM
+# APGKQ
+# ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+# RDVYC
+
+# ENCODE
+# 4
+# BDFHJLCPRTXVZNYEIWGAKMUSQO
+# AJDKSIRUXBLHWTMCQGZNPYFVOE
+# EKMFLGDQVZNTOWYHXUSPAIBRCJ
+# A
+
+# DECODE
+# 4
+# BDFHJLCPRTXVZNYEIWGAKMUSQO
+# AJDKSIRUXBLHWTMCQGZNPYFVOE
+# EKMFLGDQVZNTOWYHXUSPAIBRCJ
+# KQFM
+# DPHF
