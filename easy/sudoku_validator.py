@@ -8,31 +8,41 @@
 # 4 5 6 7 8 9 1 2 3
 # 7 8 9 1 2 3 4 5 6
 # 9 1 2 3 4 5 6 7 8
-# 3 4 5 6 7 8 9 1 2
+# 3 4 5 6 7 8 9 9 2
 # 6 7 8 9 1 2 3 4 5
 # 8 9 1 2 3 4 5 6 7
-# 2 3 4 5 6 7 8 9 1
+# 2 3 4 5 6 7 8 1 1
 # 5 6 7 8 9 1 2 3 4
 
-def check_rows(grid):
+
+def check_rows(grid_to_check_rows):
     result = True
-    for row in grid:
+    for row in grid_to_check_rows:
         a = set(row)
         result = result and (len(a) == 9 and sum(a) == 45)
     return result
 
 
-def check_columns(grid):
-    tr_grid = [list(elem) for elem in zip(*grid)]
+def check_columns(grid_to_check_columns):
+    tr_grid = [list(elem) for elem in zip(*grid_to_check_columns)]
     return check_rows(tr_grid)
 
 
-def check_subgrid(grid):
-    return True
+def check_subgrid(grid_to_check_subgrid):
+    result = True
+    for i in range(3):
+        for j in range(3):
+            rows = [grid_to_check_subgrid[z + i*3][3*j: 3 * (j+1)] for z in range(3)]
+            a = list()
+            for r in rows:
+                a.extend(r)
+            a_set = set(a)
+            result = result and (len(a_set) == 9 and sum(a_set) == 45)
+    return result
 
 
-def check(grid):
-    return check_rows(grid) and check_columns(grid) and check_subgrid(grid)
+def check(grid_to_check):
+    return check_rows(grid_to_check) and check_columns(grid_to_check) and check_subgrid(grid_to_check)
 
 
 if __name__ == '__main__':
