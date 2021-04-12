@@ -13,14 +13,19 @@
 #  OUTPUT
 #  For each of the Q filenames, display on a line the corresponding MIME type. If there is no corresponding type,
 #  then display UNKNOWN.
-# 3
-# 3
-# html text/html
+# 4
+# 7
+# txt text/plain
+# tiff image/vector
+# css text/css
 # png image/png
-# gif image/gif
-# animated.gif
-# portrait.png
-# index.html
+# example.TXT
+# referecnce.txt
+# strangename.tiff
+# resolv.CSS
+# matrix.TiFF
+# lanDsCape.Png
+# extract.cSs
 
 
 def check_assertion_of_entries(dataset, association_table):
@@ -29,8 +34,8 @@ def check_assertion_of_entries(dataset, association_table):
             file_extension = entry.split('.')[-1]
         else:
             file_extension = entry[0]
-        if file_extension in association_table.keys():
-            print(association_table[file_extension])
+        if file_extension.lower() in association_table.keys():
+            print(association_table[file_extension.lower()])
         else:
             print('UNKNOWN')
 
@@ -43,7 +48,7 @@ if __name__ == '__main__':
     dataset = list()
     for i in range(number_of_association_table_rows):
         extension, mimetype = input().split()
-        association_table[str(extension).lower()] = str(mimetype).lower()
+        association_table[str(extension).lower()] = str(mimetype)
     for i in range(number_of_filenames_to_analyze):
         dataset.append(str(input()))
     check_assertion_of_entries(dataset, association_table)
