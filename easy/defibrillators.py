@@ -40,26 +40,24 @@ import math
 
 
 def print_nearest_defibrillator_address(current_longitude, current_latitude, defibrillators_addresses):
-    minimum_distance = 10000
-    nearest_defibrillator = 'hospital'
-    for i in defibrillators_addresses.keys():
-        defibrillator_coordinates = defibrillators_addresses[i]
-        def_coordinates = defibrillator_coordinates.split(';')
-        defibrillator_longitude = float(def_coordinates[0].replace(',', '.'))
-        defibrillator_latitude = float(def_coordinates[1].replace(',', '.'))
-        x = (defibrillator_longitude - current_longitude) * math.pi/180 * \
-            math.cos((current_latitude + defibrillator_latitude) / 2 * math.pi/180)
-        y = (defibrillator_latitude - current_latitude) * math.pi / 180
-        d = math.sqrt(x * x + y * y) * 6371
+    minimum_distance = 56000
+    nearest_defibrillator = 'Hospital'
+    current_longitude = current_longitude * math.pi / 180
+    current_latitude = current_latitude * math.pi / 180
+    for address in defibrillators_addresses.keys():
+        defibrillator_coord = defibrillators_addresses[address]
+        defibrillator_longitude = float(defibrillator_coord['longitude'].replace(',', '.')) * math.pi / 180
+        defibrillator_latitude = float(defibrillator_coord['latitude'].replace(',', '.')) * math.pi / 180
+        x = (defibrillator_longitude - current_longitude) * math.cos((current_latitude + defibrillator_latitude) / 2)
+        y = defibrillator_latitude - current_latitude
+        d = math.sqrt(x*x + y*y) + 6371
         if d < minimum_distance:
             minimum_distance = d
-            nearest_defibrillator = i
+            nearest_defibrillator = address
     print(nearest_defibrillator)
-    return 0
 
 
 if __name__ == '__main__':
-    # print('Mission started')
     user_longitude_raw = input()
     user_longitude = float(user_longitude_raw.replace(',', '.'))
     user_latitude_raw = input()
@@ -68,6 +66,9 @@ if __name__ == '__main__':
     defibrillators = dict()
     for i in range(quantity):
         raw_string = input()
-        raw_string_to_list = raw_string.split(';;')
-        defibrillators[raw_string_to_list[0].split(';')[1]] = raw_string_to_list[1]
+        raw_string_to_list = raw_string.split(';')
+        defibrillator_coordinates = dict()
+        defibrillator_coordinates['longitude'] = raw_string_to_list[-2]
+        defibrillator_coordinates['latitude'] = raw_string_to_list[-1]
+        defibrillators[raw_string_to_list[1]] = defibrillator_coordinates
     print_nearest_defibrillator_address(user_longitude, user_latitude, defibrillators)
