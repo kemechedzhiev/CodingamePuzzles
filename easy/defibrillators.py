@@ -50,7 +50,7 @@ def print_nearest_defibrillator_address(current_longitude, current_latitude, def
         defibrillator_latitude = float(defibrillator_coord['latitude'].replace(',', '.')) * math.pi / 180
         x = (defibrillator_longitude - current_longitude) * math.cos((current_latitude + defibrillator_latitude) / 2)
         y = defibrillator_latitude - current_latitude
-        d = math.sqrt(x*x + y*y) + 6371
+        d = math.sqrt(x*x + y*y) * 6371
         if d < minimum_distance:
             minimum_distance = d
             nearest_defibrillator = address
