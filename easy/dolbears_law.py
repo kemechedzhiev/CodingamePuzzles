@@ -23,7 +23,42 @@
 #  of the estimates calculated every 8 seconds using the N8 formula. If your total number of measurements is odd, then
 #  ignore the very last measure because it makes the total duration of your measurements non-divisible by 8 seconds.
 #  The results must be printed rounded with 1 decimal place:
+# 2
+# 8 8 6 3 2 4 8 6 9 5 2 1 5 2 8
+# 8 3 3 6 7 2 8 1 7 4 5 4 2 3 9
+
+def calculate_the_estimates(dataset):
+    average_estimates = 0.0
+    for line in dataset:
+        numbers = [int(i) for i in line.split(' ')]
+        n60 = sum(numbers)
+        average_estimates += n60_formulae(n60)
+    print('{:.1f}'.format(average_estimates / len(dataset)))
+    if 5 <= average_estimates / len(dataset) <= 30:
+        all_measurements = list()
+        results_of_n8_formulae = 0.0
+        for line in dataset:
+            for number in line.split(' '):
+                all_measurements.append(number)
+        if len(all_measurements) % 2 != 0:
+            length = len(all_measurements) - 1
+        else:
+            length = len(all_measurements)
+        for i in range(0, length, 2):
+            n8 = int(all_measurements[i]) + int(all_measurements[i + 1])
+            results_of_n8_formulae += n8_formulae(n8)
+        print('{:.1f}'.format(results_of_n8_formulae / (length / 2)))
+
+
+def n60_formulae(n60):
+    return 10 + (n60 - 40) / 7
+
+
+def n8_formulae(n8):
+    return n8 + 5
 
 
 if __name__ == '__main__':
-    print('Mission started')
+    time_of_experiment = int(input())
+    entries = [input() for i in range(time_of_experiment)]
+    calculate_the_estimates(entries)
