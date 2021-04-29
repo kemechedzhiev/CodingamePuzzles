@@ -41,7 +41,6 @@ def check_assertion_of_entries(dataset, association_table):
 
 
 if __name__ == '__main__':
-    # print('Mission started')
     number_of_association_table_rows = int(input())
     number_of_filenames_to_analyze = int(input())
     association_table = dict()
