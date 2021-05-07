@@ -46,11 +46,23 @@
 
 
 def calculate_the_areas():
+    stacks_of_containers = list()
     cargo_truck_schedule = input()
-    return 0
+    stacks_of_containers.append([cargo_truck_schedule[0]])
+    for container in cargo_truck_schedule[1:]:
+        container_placed = False
+        for stack in stacks_of_containers:
+            if container <= stack[-1]:
+                stack.append(container)
+                container_placed = True
+                break
+        if not container_placed:
+            stacks_of_containers.append([container])
+    num_of_letters = len(set(cargo_truck_schedule))
+    return min(len(stacks_of_containers), num_of_letters)
 
 
 if __name__ == '__main__':
     num_of_threads = int(input())
     for i in range(num_of_threads):
-        print(f'{calculate_the_areas()}')
+        print(calculate_the_areas())
